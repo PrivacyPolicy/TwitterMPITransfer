@@ -16,10 +16,11 @@ i = 1
 def scrape(term, minID, maxID):
     
     if minID == 0 and maxID == 0:
-        print("SPECIAL CASE UGH!!!!!");
-        return []
-
-    result = api.search(term, lang='en', rpp=1000, count=minID, max_id=maxID)
+        # handle initial case
+        result = api.search(term, lang='en', rpp=10000)
+    else:
+        # default case, where min and max ID are given
+        result = api.search(term, lang='en', rpp=10000, count=minID, max_id=maxID)
 
     tweets = []
 
@@ -41,16 +42,19 @@ def scrape(term, minID, maxID):
                 tweetObj["favorites"] = tweet.retweeted_status.favorite_count
             except AttributeError:
                 tweetObj["favorites"] = 0
-            tweets.append(str(tweetObj["id"]) + ";0;" + str(tweetObj["retweets"]) + ";" + str(tweetObj["favorites"]) + ";" + tweetObj["user"] + ";" + tweetObj["text"])
+                
+            # id;sentiment;retweets;favorites;username;text
+            tweets.append(str(tweetObj["id"]) + ";0;" + str(tweetObj["retweets"]) \
+                + ";" + str(tweetObj["favorites"]) + ";" + tweetObj["user"] + ";" \
+                + tweetObj["text"])
             # print(i, str(text), tweet.id, tweet.retweet_count, tweet.user.name, tweet.favorite_count, '\n')
         except UnicodeEncodeError:
             print("No text data; ignoring")
-    # id;sentiment;retweets;favorites;username;text
     
     return tweets
     
    
-def main():
-    print(scrape('donald trump', 600000000000000000, 890000000000000000))
-    
+#def main():
+#    print(scrape('donald trump', 600000000000000000, 890000000000000000))
+#    
 #main()

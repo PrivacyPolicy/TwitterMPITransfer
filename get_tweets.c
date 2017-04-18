@@ -1,15 +1,5 @@
 #include <Python.h>
-//#include <string>
-//#include "tweet_struct.h"
-
-struct Tweet {
-    char* text;         // tweet
-    char* user;         // username
-    long int retweets;  // number of retweets
-    long int favorites; // number of favorites
-    float sentiment;    // between -1 and 1, sentiment of tweet
-    long int id;
-};
+#include "tweet_struct.h"
 
 #define PYFILENAME "python_scrape"    // python file being called
 #define PYFUNCNAME "scrape"           // python function being called
@@ -89,23 +79,6 @@ struct Tweet* getTweets(char* term, long int min, long int max, int* count)
         return NULL;
     }
     
-    
-    /*int size = PyList_Size(pValue);
-    struct Tweet *tweets = malloc(sizeof(struct Tweet) * size);
-    Py_ssize_t i;
-    for (i = 0; i < size; i++) {
-        pListItem = PyList_GetItem(pValue, i);
-        if (PyUnicode_Check(pListItem) || 1) {
-            pString = PyUnicode_AsEncodedString(pListItem, "utf8", "ERRORR MAN!!!");
-            const char* tmpCstChar = PyBytes_AS_STRING(pyString);
-            printf("Got a thing: %s.\n", tmpCstChar);
-            // TODO create tweet struct, add to array
-        }
-    }
-    Py_DECREF(pListItem);
-    Py_DECREF(pString);*/
-    
-    //char* str = PyString_AsString(pValue);
     int tweetCount = PyList_Size(pValue);
     struct Tweet* tweets = malloc(sizeof(struct Tweet) * tweetCount);
     int j;
@@ -128,9 +101,9 @@ struct Tweet* getTweets(char* term, long int min, long int max, int* count)
 }
 
 int main(int argc, char* argv) {
-    printf("About to start some thinking...\n");
+    printf("Downloading Tweets...\n");
     int count;
-    struct Tweet* tweets = getTweets("donald trump", 600000000000000000, 890000000000000000, &count);
+    struct Tweet* tweets = getTweets("donald trump", 0*600000000000000000, 0*890000000000000000, &count);
     int i;
     for (i = 0; i < count; i++) {
         struct Tweet tweet = tweets[i];
