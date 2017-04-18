@@ -46,7 +46,7 @@ if True:                                                          #         8538
             if (text[0:2] == "RT"):
                 text = text[3:-1] # Removes the word RT to determine the tweet was a RT
                 # text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
-            text = re.sub(r'http[s]?\:\/\/.+?\s', '', text, flags=re.MULTILINE)
+            text = re.sub(r'http[s]?\:\/\/.+?($|\s)', '', text, flags=re.MULTILINE)
 
             print(i, str(text), tweet.id, '\n')
         except UnicodeEncodeError:
